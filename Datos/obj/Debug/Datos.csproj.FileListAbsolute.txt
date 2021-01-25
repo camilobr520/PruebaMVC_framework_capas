@@ -1,0 +1,10 @@
+C:\Users\Camilo\source\repos\Capas_netFramework_completo\Datos\obj\Debug\Datos.csprojAssemblyReference.cache
+C:\Users\Camilo\source\repos\Capas_netFramework_completo\Datos\obj\Debug\Datos.csproj.CoreCompileInputs.cache
+C:\Users\Camilo\source\repos\Capas_netFramework_completo\Datos\bin\Debug\Datos.dll.config
+C:\Users\Camilo\source\repos\Capas_netFramework_completo\Datos\bin\Debug\Datos.dll
+C:\Users\Camilo\source\repos\Capas_netFramework_completo\Datos\bin\Debug\Datos.pdb
+C:\Users\Camilo\source\repos\Capas_netFramework_completo\Datos\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Camilo\source\repos\Capas_netFramework_completo\Datos\bin\Debug\EntityFramework.dll
+C:\Users\Camilo\source\repos\Capas_netFramework_completo\Datos\obj\Debug\Datos.csproj.CopyComplete
+C:\Users\Camilo\source\repos\Capas_netFramework_completo\Datos\obj\Debug\Datos.dll
+C:\Users\Camilo\source\repos\Capas_netFramework_completo\Datos\obj\Debug\Datos.pdb

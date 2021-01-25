@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ViajemosModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="autores">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="apellidos" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="libros" Relationship="Self.autores_has_libros" FromRole="autores" ToRole="libros" />
+  </EntityType>
+  <EntityType Name="editoriales">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="sede" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="libros" Relationship="Self.FK_libros_editoriales" FromRole="editoriales" ToRole="libros" />
+  </EntityType>
+  <EntityType Name="libros">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="ISBN" Type="Int64" Nullable="false" />
+    <Property Name="editoriales_id" Type="Int32" Nullable="false" />
+    <Property Name="titulo" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="sinopsis" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="n_paginas" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="editoriales" Relationship="Self.FK_libros_editoriales" FromRole="libros" ToRole="editoriales" />
+    <NavigationProperty Name="autores" Relationship="Self.autores_has_libros" FromRole="libros" ToRole="autores" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_libros_editoriales">
+    <End Role="editoriales" Type="Self.editoriales" Multiplicity="1" />
+    <End Role="libros" Type="Self.libros" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="editoriales">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="libros">
+        <PropertyRef Name="editoriales_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="autores_has_libros">
+    <End Role="autores" Type="Self.autores" Multiplicity="*" />
+    <End Role="libros" Type="Self.libros" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="ViajemosEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="autores" EntityType="Self.autores" />
+    <EntitySet Name="editoriales" EntityType="Self.editoriales" />
+    <EntitySet Name="libros" EntityType="Self.libros" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <AssociationSet Name="FK_libros_editoriales" Association="Self.FK_libros_editoriales">
+      <End Role="editoriales" EntitySet="editoriales" />
+      <End Role="libros" EntitySet="libros" />
+    </AssociationSet>
+    <AssociationSet Name="autores_has_libros" Association="Self.autores_has_libros">
+      <End Role="autores" EntitySet="autores" />
+      <End Role="libros" EntitySet="libros" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

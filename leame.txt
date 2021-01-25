@@ -1,0 +1,11 @@
+Tener en cuenta "CAPAS_NETFRAMEWORK_COMPLETO"
+
+1-En todas las capas debo instalar nuget entityframework
+2-La capa Api es opcional, solo si me piden una api rest especificamente, pero dar prioridad a las vistas
+3-Colocar, copiar cadena de conneciion del app.config de la capa datos al los app.config de front y api.
+4-El metodo modify (en el controlador) que redirige a su propia vista para cargar la vista parcial no debe tener [httpPost]
+5-El model de la capa front no se necesita, trabajar unicamente con el modelo de la capa Modelos.
+6-Instalar nugget DataAnnotations en la capa Modelos, pues ese modelo es el que se valida.
+7-Para que el jquery del datanottation funcione. Ir al Layout y agregra:
+  @Scripts.Render("~/bundles/jqueryval")
+antes del RenderSection

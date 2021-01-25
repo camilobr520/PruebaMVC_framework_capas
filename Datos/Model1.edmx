@@ -1,0 +1,269 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ViajemosModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="autores">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="apellidos" Type="varchar" MaxLength="45" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Viajemos.dbo.autores_has_libros' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="autores_has_libros">
+          <Key>
+            <PropertyRef Name="autores_Id" />
+            <PropertyRef Name="libros_ISBN" />
+          </Key>
+          <Property Name="autores_Id" Type="int" Nullable="false" />
+          <Property Name="libros_ISBN" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="editoriales">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="sede" Type="varchar" MaxLength="45" Nullable="false" />
+        </EntityType>
+        <EntityType Name="libros">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="ISBN" Type="bigint" Nullable="false" />
+          <Property Name="editoriales_id" Type="int" Nullable="false" />
+          <Property Name="titulo" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="sinopsis" Type="text" Nullable="false" />
+          <Property Name="n_paginas" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_autores_has_libros_autores">
+          <End Role="autores" Type="Self.autores" Multiplicity="1" />
+          <End Role="autores_has_libros" Type="Self.autores_has_libros" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="autores">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="autores_has_libros">
+              <PropertyRef Name="autores_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_autores_has_libros_libros">
+          <End Role="libros" Type="Self.libros" Multiplicity="1" />
+          <End Role="autores_has_libros" Type="Self.autores_has_libros" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="libros">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="autores_has_libros">
+              <PropertyRef Name="libros_ISBN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_libros_editoriales">
+          <End Role="editoriales" Type="Self.editoriales" Multiplicity="1" />
+          <End Role="libros" Type="Self.libros" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="editoriales">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="libros">
+              <PropertyRef Name="editoriales_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ViajemosModelStoreContainer">
+          <EntitySet Name="autores" EntityType="Self.autores" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="editoriales" EntityType="Self.editoriales" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="libros" EntityType="Self.libros" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="autores_has_libros" EntityType="Self.autores_has_libros" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [autores_has_libros].[autores_Id] AS [autores_Id], 
+    [autores_has_libros].[libros_ISBN] AS [libros_ISBN]
+    FROM [dbo].[autores_has_libros] AS [autores_has_libros]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_autores_has_libros_autores" Association="Self.FK_autores_has_libros_autores">
+            <End Role="autores" EntitySet="autores" />
+            <End Role="autores_has_libros" EntitySet="autores_has_libros" />
+          </AssociationSet>
+          <AssociationSet Name="FK_autores_has_libros_libros" Association="Self.FK_autores_has_libros_libros">
+            <End Role="libros" EntitySet="libros" />
+            <End Role="autores_has_libros" EntitySet="autores_has_libros" />
+          </AssociationSet>
+          <AssociationSet Name="FK_libros_editoriales" Association="Self.FK_libros_editoriales">
+            <End Role="editoriales" EntitySet="editoriales" />
+            <End Role="libros" EntitySet="libros" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ViajemosModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="autores">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="apellidos" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="libros" Relationship="Self.autores_has_libros" FromRole="autores" ToRole="libros" />
+        </EntityType>
+        <EntityType Name="editoriales">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="sede" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="libros" Relationship="Self.FK_libros_editoriales" FromRole="editoriales" ToRole="libros" />
+        </EntityType>
+        <EntityType Name="libros">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="ISBN" Type="Int64" Nullable="false" />
+          <Property Name="editoriales_id" Type="Int32" Nullable="false" />
+          <Property Name="titulo" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="sinopsis" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="n_paginas" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="editoriales" Relationship="Self.FK_libros_editoriales" FromRole="libros" ToRole="editoriales" />
+          <NavigationProperty Name="autores" Relationship="Self.autores_has_libros" FromRole="libros" ToRole="autores" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_libros_editoriales">
+          <End Role="editoriales" Type="Self.editoriales" Multiplicity="1" />
+          <End Role="libros" Type="Self.libros" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="editoriales">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="libros">
+              <PropertyRef Name="editoriales_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="autores_has_libros">
+          <End Role="autores" Type="Self.autores" Multiplicity="*" />
+          <End Role="libros" Type="Self.libros" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="ViajemosEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="autores" EntityType="Self.autores" />
+          <EntitySet Name="editoriales" EntityType="Self.editoriales" />
+          <EntitySet Name="libros" EntityType="Self.libros" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK_libros_editoriales" Association="Self.FK_libros_editoriales">
+            <End Role="editoriales" EntitySet="editoriales" />
+            <End Role="libros" EntitySet="libros" />
+          </AssociationSet>
+          <AssociationSet Name="autores_has_libros" Association="Self.autores_has_libros">
+            <End Role="autores" EntitySet="autores" />
+            <End Role="libros" EntitySet="libros" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ViajemosModelStoreContainer" CdmEntityContainer="ViajemosEntities">
+          <EntitySetMapping Name="autores">
+            <EntityTypeMapping TypeName="ViajemosModel.autores">
+              <MappingFragment StoreEntitySet="autores">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="apellidos" ColumnName="apellidos" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="editoriales">
+            <EntityTypeMapping TypeName="ViajemosModel.editoriales">
+              <MappingFragment StoreEntitySet="editoriales">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="sede" ColumnName="sede" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="libros">
+            <EntityTypeMapping TypeName="ViajemosModel.libros">
+              <MappingFragment StoreEntitySet="libros">
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+                <ScalarProperty Name="editoriales_id" ColumnName="editoriales_id" />
+                <ScalarProperty Name="titulo" ColumnName="titulo" />
+                <ScalarProperty Name="sinopsis" ColumnName="sinopsis" />
+                <ScalarProperty Name="n_paginas" ColumnName="n_paginas" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ViajemosModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="autores_has_libros" TypeName="ViajemosModel.autores_has_libros" StoreEntitySet="autores_has_libros">
+            <EndProperty Name="autores">
+              <ScalarProperty Name="id" ColumnName="autores_Id" />
+            </EndProperty>
+            <EndProperty Name="libros">
+              <ScalarProperty Name="id" ColumnName="libros_ISBN" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,59 @@
+﻿@*agregar este using en el controlador*@
+@model Modelos.LibrosModel
+@{
+
+}
+
+<h2>Libros</h2>
+
+@*vista parcial*@
+@{ Html.RenderPartial("~/Views/Libros/Formulario.cshtml"); }
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table table-condensed table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Título</th>
+                        <th>Sinopsis</th>
+                        <th>N_Paginas</th>
+                        <th>Editorial</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.listLibros)
+                    {
+                        <tr>
+                            <td>
+                                @item.Titulo
+                            </td>
+                            <td style="max-width:300px">
+                                @item.Sinopsis
+                            </td>
+                            <td>
+                                @item.N_paginas
+                            </td>
+                            <td>
+                                @*el item nombre viene en minuscula es parte del objeto incrustado del ado framework model*@
+                                @item.Editoriales.nombre
+
+                            </td>
+
+                            <td>
+
+                                @Html.ActionLink("Editar", "Modify", new { controller = "Libros", id = item.Id })|
+                                @Html.ActionLink("Delete", "Delete", new { controller = "Libros", id = item.Id })
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ViajemosModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="autores">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="45" Nullable="false" />
+    <Property Name="apellidos" Type="varchar" MaxLength="45" Nullable="false" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Viajemos.dbo.autores_has_libros' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="autores_has_libros">
+    <Key>
+      <PropertyRef Name="autores_Id" />
+      <PropertyRef Name="libros_ISBN" />
+    </Key>
+    <Property Name="autores_Id" Type="int" Nullable="false" />
+    <Property Name="libros_ISBN" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="editoriales">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="45" Nullable="false" />
+    <Property Name="sede" Type="varchar" MaxLength="45" Nullable="false" />
+  </EntityType>
+  <EntityType Name="libros">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="ISBN" Type="bigint" Nullable="false" />
+    <Property Name="editoriales_id" Type="int" Nullable="false" />
+    <Property Name="titulo" Type="varchar" MaxLength="45" Nullable="false" />
+    <Property Name="sinopsis" Type="text" Nullable="false" />
+    <Property Name="n_paginas" Type="varchar" MaxLength="45" Nullable="false" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <Association Name="FK_autores_has_libros_autores">
+    <End Role="autores" Type="Self.autores" Multiplicity="1" />
+    <End Role="autores_has_libros" Type="Self.autores_has_libros" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="autores">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="autores_has_libros">
+        <PropertyRef Name="autores_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_autores_has_libros_libros">
+    <End Role="libros" Type="Self.libros" Multiplicity="1" />
+    <End Role="autores_has_libros" Type="Self.autores_has_libros" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="libros">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="autores_has_libros">
+        <PropertyRef Name="libros_ISBN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_libros_editoriales">
+    <End Role="editoriales" Type="Self.editoriales" Multiplicity="1" />
+    <End Role="libros" Type="Self.libros" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="editoriales">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="libros">
+        <PropertyRef Name="editoriales_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ViajemosModelStoreContainer">
+    <EntitySet Name="autores" EntityType="Self.autores" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="editoriales" EntityType="Self.editoriales" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="libros" EntityType="Self.libros" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="autores_has_libros" EntityType="Self.autores_has_libros" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [autores_has_libros].[autores_Id] AS [autores_Id], 
+    [autores_has_libros].[libros_ISBN] AS [libros_ISBN]
+    FROM [dbo].[autores_has_libros] AS [autores_has_libros]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_autores_has_libros_autores" Association="Self.FK_autores_has_libros_autores">
+      <End Role="autores" EntitySet="autores" />
+      <End Role="autores_has_libros" EntitySet="autores_has_libros" />
+    </AssociationSet>
+    <AssociationSet Name="FK_autores_has_libros_libros" Association="Self.FK_autores_has_libros_libros">
+      <End Role="libros" EntitySet="libros" />
+      <End Role="autores_has_libros" EntitySet="autores_has_libros" />
+    </AssociationSet>
+    <AssociationSet Name="FK_libros_editoriales" Association="Self.FK_libros_editoriales">
+      <End Role="editoriales" EntitySet="editoriales" />
+      <End Role="libros" EntitySet="libros" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

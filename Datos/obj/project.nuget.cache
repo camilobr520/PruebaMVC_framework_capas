@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "u/l0SyXvORdUsDOrYPjkGxIgzQQ8U4cXh7ctMDc2z/sjkLgg6A26RwGKVAkpjT6c3mR0/UVPFzefBbDHX+PtZg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Camilo\\source\\repos\\Capas_netFramework_completo\\Datos\\Datos.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Camilo\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512"
+  ],
+  "logs": []
+}

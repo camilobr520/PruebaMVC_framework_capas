@@ -1,0 +1,54 @@
+﻿@model Modelos.LibrosModel
+
+@{
+    ViewBag.Title = "Formulario";
+}
+
+<h2>Formulario</h2>
+
+@using (Html.BeginForm("Add", "Libros", FormMethod.Post))
+{
+    <div class="row">
+
+        @*agrego un campo oculto para saber si es agregar o modificar registro*@
+        @Html.TextBoxFor(d => d.Id, new { style = "display: none;" })
+
+        <div class="form-group  col-lg-6">
+            <label>Titulo</label>
+            @Html.TextBoxFor(d => d.Titulo, new { @class = "form-control" })
+            <span asp-validation-for="Titulo"></span>
+            @Html.ValidationMessageFor(d => d.Titulo, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-lg-6">
+            <label>Sinopsis</label>
+            @Html.TextBoxFor(d => d.Sinopsis, new { @class = "form-control" })
+            <span asp-validation-for="Sinopsis"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-lg-6">
+            <label>ISBN</label>
+            @Html.TextBoxFor(d => d.ISBN, new { @class = "form-control" })
+            <span asp-validation-for="ISBN"></span>
+        </div>
+        <div class="form-group col-lg-6">
+            <label>N_paginas</label>
+            @Html.TextBoxFor(d => d.N_paginas, new { @class = "form-control" })
+            <span asp-validation-for="N_paginas"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-lg-6">
+            <label>Editoriales</label>
+
+
+            @Html.DropDownListFor(d => d.Editoriales_id, new SelectList(ViewBag.listEditores, "Id", "Nombre"), "--seleccione--", new { @class = "form-control" })
+            <span asp-validation-for="Editoriales"></span>
+        </div>
+        <div class="col-lg-6">
+            <button type="submit" class="btn btn-success">Guardar</button>
+        </div>
+    </div>
+
+}
+
